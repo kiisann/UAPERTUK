@@ -2,8 +2,8 @@
 
 <h3><strong>Dosen Pengampu:</strong></h3>
 <ul>
-  <li>1. Didik Kurniawan, S.Si., M.T</li>
-  <li>2. Dhella Amelia, M.Kom.</li>
+  <li>Didik Kurniawan, S.Si., M.T</li>
+  <li>Dhella Amelia, M.Kom.</li>
 </ul>
 
 <h3><strong>Asisten Dosen:</strong></h3>
