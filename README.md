@@ -15,3 +15,4 @@ Project ini bertujuan untuk membantu investor harian memilih saham yang paling o
 Tujuan Project :
 1. Mengolah data saham harian (ROI dan volatilitas) menggunakan C++.
 2. Mengurutkan saham berdasarkan rasio ROI/volatilitas untuk menentukan saham paling efisien.
+3. Memberikan rekomendasi saham hasian berdasarkan rasio tersebut.
