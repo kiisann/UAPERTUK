@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "dataBaseSaham.cpp"
 using namespace std;
 
 void merge(vector<int>& arr, int left, int mid, int right) {
