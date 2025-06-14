@@ -57,3 +57,25 @@ void Portofolio::inisialisasiData() {
     };
     for (auto& s : saham) tambahSaham(s);
 }
+
+void Portofolio::tambahSaham(const Saham& s) {
+    database.push_back(s);
+    antrianAnalisis.push(s);
+}
+
+void Portofolio::tampilkanSemuaSaham() {
+    cout << "\nDaftar Saham:\n";
+    cout << "------------------------------------------------------------\n";
+    cout << left << setw(6) << "Kode" << setw(15) << "Sektor"
+         << setw(10) << "ROI" << setw(15) << "Volatilitas"
+         << setw(10) << "Harga" << endl;
+    cout << "------------------------------------------------------------\n";
+    for (const auto& s : database) {
+        cout << left << setw(6) << s.kode
+             << setw(15) << s.sektor
+             << setw(10) << fixed << setprecision(3) << s.ROI
+             << setw(15) << s.volatilitas
+             << setw(10) << s.harga << endl;
+    }
+    cout << "------------------------------------------------------------\n";
+}
