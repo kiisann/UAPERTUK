@@ -79,3 +79,58 @@ void Portofolio::tampilkanSemuaSaham() {
     }
     cout << "------------------------------------------------------------\n";
 }
+
+void Portofolio::rekomendasiSahamHarian() {
+    while (!sahamRekomendasi.empty()) sahamRekomendasi.pop();
+    queue<Saham> tempQueue = antrianAnalisis;
+    while (!tempQueue.empty()) {
+        Saham s = tempQueue.front(); tempQueue.pop();
+        if (s.ROI > 0.01 && s.volatilitas < 0.03)
+            sahamRekomendasi.push(s);
+    }
+
+    cout << "\nRekomendasi Saham Harian (ROI > 1% & Volatilitas < 3%):\n";
+    if (sahamRekomendasi.empty()) {
+        cout << "Tidak ada saham yang memenuhi kriteria.\n";
+    } else {
+        stack<Saham> tempStack = sahamRekomendasi;
+        while (!tempStack.empty()) {
+            Saham s = tempStack.top(); tempStack.pop();
+            cout << "- " << s.kode << " (ROI: " << s.ROI * 100
+                 << "%, Vol: " << s.volatilitas * 100 << "%, Harga: Rp."
+                 << s.harga << ")\n";
+        }
+    }
+}
+
+void Portofolio::urutkanBerdasarkanROI() {
+    vector<Saham> sorted = database;
+    sort(sorted.begin(), sorted.end(), [](const Saham& a, const Saham& b) {
+        return a.ROI > b.ROI;
+    });
+
+    cout << "\nSaham Terurut berdasarkan ROI Tertinggi:\n";
+    for (const auto& s : sorted) {
+        cout << s.kode << " - ROI: " << s.ROI * 100 << "% (Harga: Rp." << s.harga << ")\n";
+    }
+}
+
+void Portofolio::urutkanBerdasarkanVolatilitas() {
+    vector<Saham> sorted = database;
+    sort(sorted.begin(), sorted.end(), [](const Saham& a, const Saham& b) {
+        return a.volatilitas < b.volatilitas;
+    });
+
+    cout << "\nSaham Terurut berdasarkan Volatilitas Terendah:\n";
+    for (const auto& s : sorted) {
+        cout << s.kode << " - Vol: " << s.volatilitas * 100 << "% (ROI: "
+             << s.ROI * 100 << "%)\n";
+    }
+}
+
+void Portofolio::optimasiPortofolio() {
+    int budget;
+    cout << "\nMasukkan budget investasi (Rp.): ";
+    cin >> budget;
+    knapsackOptimasi(budget);
+}
