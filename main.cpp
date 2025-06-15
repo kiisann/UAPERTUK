@@ -134,3 +134,68 @@ void Portofolio::optimasiPortofolio() {
     cin >> budget;
     knapsackOptimasi(budget);
 }
+
+Saham* Portofolio::cariROITertinggi(Saham* arr, int low, int high) {
+    if (low == high) return &arr[low];
+    int mid = (low + high) / 2;
+    Saham* left = cariROITertinggi(arr, low, mid);
+    Saham* right = cariROITertinggi(arr, mid + 1, high);
+    return (left->ROI > right->ROI) ? left : right;
+}
+
+Saham* Portofolio::cariVolatilitasTerendah(Saham* arr, int low, int high) {
+    if (low == high) return &arr[low];
+    int mid = (low + high) / 2;
+    Saham* left = cariVolatilitasTerendah(arr, low, mid);
+    Saham* right = cariVolatilitasTerendah(arr, mid + 1, high);
+    return (left->volatilitas < right->volatilitas) ? left : right;
+}
+
+void Portofolio::knapsackOptimasi(int budget) {
+    vector<pair<double, Saham*>> valuePerRupiah;
+    for (auto& s : database) {
+        valuePerRupiah.push_back({s.ROI / s.harga, &s});
+    }
+    sort(valuePerRupiah.rbegin(), valuePerRupiah.rend());
+
+    cout << "\nRekomendasi Pembelian dengan Budget Rp." << budget << ":\n";
+    int sisa = budget;
+    for (auto& item : valuePerRupiah) {
+        if (item.second->harga <= sisa) {
+            int jumlah = sisa / item.second->harga;
+            cout << "- " << item.second->kode << ": " << jumlah
+                 << " lot (Rp." << jumlah * item.second->harga << ")\n";
+            sisa -= jumlah * item.second->harga;
+        }
+    }
+    cout << "Sisa budget: Rp." << sisa << endl;
+}
+
+int main() {
+    Portofolio portofolio;
+    int pilih;
+    do {
+        cout << "\n=== MENU SAHAM ===\n";
+        cout << "1. Tampilkan saham\n2. Tambah saham baru\n3. Rekomendasi harian\n";
+        cout << "4. Urut ROI\n5. Urut Volatilitas\n6. Optimasi Portofolio\n7. Keluar\n";
+        cout << "Pilihan: "; cin >> pilih;
+        switch (pilih) {
+            case 1: portofolio.tampilkanSemuaSaham(); break;
+            case 2: {
+                Saham s;
+                cout << "Kode: "; cin >> s.kode;
+                cout << "Sektor: "; cin >> s.sektor;
+                cout << "ROI: "; cin >> s.ROI;
+                cout << "Volatilitas: "; cin >> s.volatilitas;
+                cout << "Harga: "; cin >> s.harga;
+                portofolio.tambahSaham(s); break;
+            }
+            case 3: portofolio.rekomendasiSahamHarian(); break;
+            case 4: portofolio.urutkanBerdasarkanROI(); break;
+            case 5: portofolio.urutkanBerdasarkanVolatilitas(); break;
+            case 6: portofolio.optimasiPortofolio(); break;
+            case 7: cout << "Keluar...\n"; break;
+            default: cout << "Pilihan salah!\n";
+        }
+    } while (pilih != 7);
+}
